@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+		<Properties>
+		    <Property name="log-path">@log4j2.path@</Property>
+		    <Property name="archive">@log4j2.path@/archive</Property>
+		</Properties>
+		<Appenders>
+		    <Console name="Console-Appender" target="SYSTEM_OUT">
+		        <PatternLayout>
+		            <pattern>
+		                [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+		            </pattern>>
+		        </PatternLayout>
+		    </Console>
+		    <RollingFile name="RollingFile-Appender"
+		             fileName="@log4j2.path@/api_security.log"
+		             filePattern="@log4j2.path@/api_security.log.%d{yyyy-MM-dd-hh-mm}.gz">
+			    <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+		        <Policies>
+		             <SizeBasedTriggeringPolicy size="100 MB"/>
+		        </Policies>
+		        <DefaultRolloverStrategy max="100"/>
+			</RollingFile>        
+		</Appenders>
+	
+		<Loggers>
+			<Logger name="org.springframework.web" level="info" additivity="false">
+	            <AppenderRef ref="RollingFile-Appender"/>
+	            <AppenderRef ref="Console-Appender"/>
+	        </Logger>
+		    <Logger name="com.security" level="info" additivity="false">
+		        <AppenderRef ref="RollingFile-Appender" level="info"/>
+		        <AppenderRef ref="Console-Appender" level="info"/>           
+		    </Logger>
+		    <Root level="info">
+		        <AppenderRef ref="Console-Appender"/>
+		    </Root>
+		    <!-- <Root level="error">
+		        <AppenderRef ref="RollingFile-Appender"/>
+		    </Root>
+		    <Root level="debug">
+		        <AppenderRef ref="Console-Appender"/>
+		    </Root> -->
+		</Loggers>
+</Configuration>
